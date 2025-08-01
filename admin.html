@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>صفحة الإدارة - توليد منتج</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #fff7f0;
+    }
+    input, textarea {
+      display: block;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: orange;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .result {
+      background-color: #f5f5f5;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 6px;
+      direction: ltr;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>إضافة منتج جديد</h1>
+
+  <label>اسم المنتج</label>
+  <input type="text" id="name" placeholder="مثال: شنطة جلد" />
+
+  <label>السعر</label>
+  <input type="text" id="price" placeholder="مثال: 120 ريال" />
+
+  <label>الوصف</label>
+  <textarea id="desc" rows="3" placeholder="مثال: شنطة جلد طبيعية، صناعة يدوية"></textarea>
+
+  <label>رابط الصورة</label>
+  <input type="text" id="img" placeholder="رابط صورة المنتج" />
+
+  <label>رقم واتساب (بدون + ولا 0)</label>
+  <input type="text" id="phone" placeholder="مثال: 9665xxxxxxxx" />
+
+  <button onclick="generateCode()">إنشاء الكود</button>
+
+  <div class="result">
+    <h3>الكود الناتج:</h3>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    function generateCode() {
+      const name = document.getElementById('name').value;
+      const price = document.getElementById('price').value;
+      const desc = document.getElementById('desc').value;
+      const img = document.getElementById('img').value;
+      const phone = document.getElementById('phone').value;
+
+      const code = `
+<div class="product">
+  <h2>${name}</h2>
+  <img src="${img}" alt="${name}" />
+  <p>${desc}</p>
+  <p><strong>السعر: ${price}</strong></p>
+  <a class="btn" href="https://wa.me/${phone}?text=أرغب%20في%20طلب%20${encodeURIComponent(name)}">اطلب عبر واتساب</a>
+</div>`;
+
+      document.getElementById('output').textContent = code;
+    }
+  </script>
+
+</body>
+</html>
