@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>عربة التسوق | POLITO RP</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Tahoma', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #111;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .item {
+      background-color: #1a1a1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      margin-top: 20px;
+      display: inline-block;
+      background-color: #fff;
+      color: #000;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order-info {
+      margin-top: 20px;
+      background-color: #222;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .order-id {
+      color: #ff5252;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .empty {
+      color: #aaa;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🛒 عربة التسوق</h1>
+  </header>
+
+  <div class="container" id="cartContainer">
+    <!-- المنتجات تظهر هنا -->
+  </div>
+
+  <div class="container">
+    <button class="btn" onclick="confirmOrder()">تأكيد الطلب</button>
+
+    <div class="order-info" id="orderInfo">
+      <div class="order-id" id="orderId"></div>
+      <p>انسخ رقم الطلب وافتح تكت على ديسكورد:</p>
+      <a class="btn" href="https://discord.gg/QtqrHmTVGU" target="_blank">🎫 فتح تكت</a>
+    </div>
+  </div>
+
+  <script>
+    const cartContainer = document.getElementById("cartContainer");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    if (cart.length === 0) {
+      cartContainer.innerHTML = "<p class='empty'>لا توجد منتجات في العربة.</p>";
+    } else {
+      cart.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerText = item;
+        cartContainer.appendChild(div);
+      });
+    }
+
+    function confirmOrder() {
+      const orderId = "POLITO-" + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("orderId").innerText = "رقم طلبك: " + orderId;
+      document.getElementById("orderInfo").style.display = "block";
+
+      // تمسح العربة بعد التأكيد
+      localStorage.removeItem("cart");
+    }
+  </script>
+
+</body>
+</html>
