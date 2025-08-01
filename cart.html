@@ -1,120 +1,91 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>عربة التسوق | POLITO RP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>عربة التسوق - POLITO RP</title>
   <style>
     body {
       background-color: #000;
       color: #fff;
-      font-family: 'Tahoma', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #111;
-      padding: 20px;
-      text-align: center;
+      font-family: sans-serif;
+      padding: 2rem;
     }
 
     h1 {
-      margin: 0;
-      font-size: 24px;
+      text-align: center;
     }
 
-    .container {
-      padding: 30px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .item {
-      background-color: #1a1a1a;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 10px;
+    #cartItems {
+      margin-top: 1rem;
+      border: 1px solid #444;
+      padding: 1rem;
+      border-radius: 10px;
+      background-color: #111;
     }
 
     .btn {
-      margin-top: 20px;
-      display: inline-block;
-      background-color: #fff;
-      color: #000;
+      background-color: white;
+      color: black;
+      border: none;
       padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 6px;
+      margin-top: 20px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    .order-info {
+    .btn:hover {
+      background-color: #ddd;
+    }
+
+    #orderNumber {
       margin-top: 20px;
-      background-color: #222;
-      padding: 15px;
-      border-radius: 8px;
-      display: none;
+      font-size: 1.2rem;
+      color: lime;
     }
 
-    .order-id {
-      color: #ff5252;
-      font-size: 18px;
+    a.discord-link {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #7289DA;
       font-weight: bold;
-      margin-bottom: 10px;
     }
-
-    .empty {
-      color: #aaa;
-      text-align: center;
-      margin-top: 50px;
-    }
-
   </style>
 </head>
 <body>
+  <h1>🛒 عربة التسوق</h1>
+  <div id="cartItems">جارٍ تحميل المنتجات...</div>
 
-  <header>
-    <h1>🛒 عربة التسوق</h1>
-  </header>
+  <button class="btn" onclick="placeOrder()">تأكيد الطلب</button>
 
-  <div class="container" id="cartContainer">
-    <!-- المنتجات تظهر هنا -->
-  </div>
-
-  <div class="container">
-    <button class="btn" onclick="confirmOrder()">تأكيد الطلب</button>
-
-    <div class="order-info" id="orderInfo">
-      <div class="order-id" id="orderId"></div>
-      <p>انسخ رقم الطلب وافتح تكت على ديسكورد:</p>
-      <a class="btn" href="https://discord.gg/QtqrHmTVGU" target="_blank">🎫 فتح تكت</a>
-    </div>
-  </div>
+  <div id="orderNumber"></div>
 
   <script>
-    const cartContainer = document.getElementById("cartContainer");
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartDiv = document.getElementById("cartItems");
 
     if (cart.length === 0) {
-      cartContainer.innerHTML = "<p class='empty'>لا توجد منتجات في العربة.</p>";
+      cartDiv.innerHTML = "عربتك فاضية.";
     } else {
-      cart.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerText = item;
-        cartContainer.appendChild(div);
-      });
+      cartDiv.innerHTML = "<ul>" + cart.map(item => `<li>${item}</li>`).join("") + "</ul>";
     }
 
-    function confirmOrder() {
-      const orderId = "POLITO-" + Math.floor(1000 + Math.random() * 9000);
-      document.getElementById("orderId").innerText = "رقم طلبك: " + orderId;
-      document.getElementById("orderInfo").style.display = "block";
+    function placeOrder() {
+      if (cart.length === 0) {
+        alert("ما فيه منتجات بالعربة!");
+        return;
+      }
 
-      // تمسح العربة بعد التأكيد
+      const orderNum = "P-" + Math.floor(Math.random() * 1000000);
+      document.getElementById("orderNumber").innerHTML =
+        `✅ رقم طلبك: <strong>${orderNum}</strong><br>
+        <a href="https://discord.gg/QtqrHmTVGU" class="discord-link" target="_blank">
+          اضغط هنا لفتح تذكرة في الديسكورد وقدم رقم الطلب.
+        </a>`;
+
       localStorage.removeItem("cart");
     }
   </script>
-
 </body>
 </html>
